@@ -160,6 +160,48 @@ describe StatusCake::Client do
     end
   end
 
+  describe '/API/Tests/Details' do
+    let(:params) do
+      {TestID: 241}
+    end
+
+    let(:response) do
+      {"TestID"=>6735,
+       "TestType"=>"HTTP",
+       "Paused"=>false,
+       "WebsiteName"=>"NL",
+       "ContactGroup"=>"StatusCake Alerts",
+       "ContactID"=>536,
+       "Status"=>"Up",
+       "Uptime"=>0,
+       "CheckRate"=>1,
+       "Timeout"=>40,
+       "LogoImage"=>"",
+       "WebsiteHost"=>"Various",
+       "NodeLocations"=>["UK", "JP", "SG1", "SLC"],
+       "FindString"=>"",
+       "DoNotFind"=>false,
+       "LastTested"=>"2013-01-20 14:38:18",
+       "NextLocation"=>"USNY",
+       "Processing"=>false,
+       "ProcessingState"=>"Pretest",
+       "ProcessingOn"=>"dalas.localdomain",
+       "DownTimes"=>"0"}
+    end
+
+    it do
+      client = status_cake do |stub|
+        stub.get('/API/Tests/Details') do |env|
+          expect(env.request_headers).to eq request_headers
+          expect(env.params).to eq stringify_hash(params)
+          [200, {'Content-Type' => 'json'}, JSON.dump(response)]
+        end
+      end
+
+      expect(client.tests_details(params)).to eq response
+    end
+  end
+
   context 'when error happen' do
     let(:response) do
       {"ErrNo"=>1, "Error"=>"REQUEST[TestID] provided not linked to this account"}
