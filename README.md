@@ -95,3 +95,7 @@ This is because [the original API](https://www.statuscake.com/api/Tests/Deleting
 bundle install
 bundle exec rake
 ```
+
+## Status Cake API reference
+
+* https://www.statuscake.com/api/index.md
