@@ -1,4 +1,5 @@
 require 'statuscake'
+require 'uri'
 
 TEST_API_KEY  = 'l6OxVJilcD2cETMoNRvn'
 TEST_USERNAME = 'StatusCake'

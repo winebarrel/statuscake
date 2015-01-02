@@ -13,9 +13,10 @@ class StatusCake::Client
   ]
 
   APIs = {
-    '/API/Alerts/'        => :get,
-    '/API/Tests/'         => :get,
-    '/API/Tests/Details/' => :get,
+    '/API/Alerts/'               => :get,
+    '/API/ContactGroups/Update/' => :put,
+    '/API/Tests/'                => :get,
+    '/API/Tests/Details/'        => :get,
   }
 
   def initialize(options)
@@ -57,7 +58,16 @@ class StatusCake::Client
   def request(path, method, params = {})
     response = @conn.send(method) do |req|
       req.url path
-      req.params = params
+
+      case method
+      when :get, :delete
+        req.params = params
+      when :post, :put
+        req.body = params
+      else
+        raise 'must not happen'
+      end
+
       req.headers[:API] = @options[:API]
       req.headers[:Username] = @options[:Username]
       yield(req) if block_given?

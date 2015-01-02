@@ -7,9 +7,15 @@ describe StatusCake::Client do
     }
   end
 
+  let(:form_request_headers) do
+    request_headers.merge(
+      'Content-Type' => 'application/x-www-form-urlencoded'
+    )
+  end
+
   describe '/API/Alerts/' do
     let(:params) do
-      {:TestID => 241}
+      {TestID: 241}
     end
 
     let(:response) do
@@ -30,6 +36,33 @@ describe StatusCake::Client do
       end
 
       expect(client.alerts(params)).to eq response
+    end
+  end
+
+  describe '/API/ContactGroups/Update/' do
+    let(:params) do
+      {GroupName: 'my group', Email: 'alice@example.com'}
+    end
+
+    let(:response) do
+      {"Success"=>true,
+       "Message"=>"Test Inserted",
+       "Issues"=>[],
+       "Data"=>
+        {"Email"=>"alice@example.com", "GroupName"=>"my group", "Client"=>"54321"},
+       "InsertID"=>12345}
+    end
+
+    it do
+      client = status_cake do |stub|
+        stub.put('/API/ContactGroups/Update/') do |env|
+          expect(env.request_headers).to eq form_request_headers
+          expect(env.body).to eq URI.encode_www_form(params.sort)
+          [200, {'Content-Type' => 'json'}, JSON.dump(response)]
+        end
+      end
+
+      expect(client.contactgroups_update(params)).to eq response
     end
   end
 
