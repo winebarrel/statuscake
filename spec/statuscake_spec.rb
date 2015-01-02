@@ -333,6 +333,30 @@ describe StatusCake::Client do
     end
   end
 
+  describe '/API/Auth' do
+    let(:response) do
+      {"Success"=>true,
+       "Details"=>
+        {"Username"=>"StatusCake",
+         "FirstName"=>"Matthew",
+         "LastName"=>"Awesomeo",
+         "Plan"=>"BUSINESS",
+         "Timezone"=>"Europe/London",
+         "CountryCode"=>"GB"}}
+    end
+
+    it do
+      client = status_cake do |stub|
+        stub.get('/API/Auth') do |env|
+          expect(env.request_headers).to eq request_headers
+          [200, {'Content-Type' => 'application/json'}, JSON.dump(response)]
+        end
+      end
+
+      expect(client.auth).to eq response
+    end
+  end
+
   context 'when error happen' do
     let(:response) do
       {"ErrNo"=>1, "Error"=>"REQUEST[TestID] provided not linked to this account"}

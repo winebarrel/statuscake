@@ -26,6 +26,7 @@ class StatusCake::Client
     '/API/Locations/json'       => {:method => :get, :alias => :locations},
     '/API/Locations/txt'        => {:method => :get},
     '/API/Locations/xml'        => {:method => :get},
+    '/API/Auth'                 => {:method => :get},
   }
 
   def initialize(options)
