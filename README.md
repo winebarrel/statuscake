@@ -1,6 +1,6 @@
 # StatusCake
 
-It is a [Status Cake](https://www.statuscake.com/) API client library.
+It is a [StatusCake](https://www.statuscake.com/) API client library.
 
 [![Gem Version](https://badge.fury.io/rb/statuscake.svg)](http://badge.fury.io/rb/statuscake)
 [![Build Status](https://travis-ci.org/winebarrel/statuscake.svg?branch=master)](https://travis-ci.org/winebarrel/statuscake)
@@ -96,6 +96,6 @@ bundle install
 bundle exec rake
 ```
 
-## Status Cake API reference
+## StatusCake API reference
 
 * https://www.statuscake.com/api/index.md
