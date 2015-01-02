@@ -13,7 +13,7 @@ describe StatusCake::Client do
     )
   end
 
-  describe '/API/Alerts/' do
+  describe '/API/Alerts' do
     let(:params) do
       {TestID: 241}
     end
@@ -28,7 +28,7 @@ describe StatusCake::Client do
 
     it do
       client = status_cake do |stub|
-        stub.get('/API/Alerts/') do |env|
+        stub.get('/API/Alerts') do |env|
           expect(env.request_headers).to eq request_headers
           expect(env.params).to eq stringify_hash(params)
           [200, {'Content-Type' => 'json'}, JSON.dump(response)]
@@ -39,7 +39,7 @@ describe StatusCake::Client do
     end
   end
 
-  describe '/API/ContactGroups/Update/' do
+  describe '/API/ContactGroups/Update' do
     let(:params) do
       {GroupName: 'my group', Email: 'alice@example.com'}
     end
@@ -55,7 +55,7 @@ describe StatusCake::Client do
 
     it do
       client = status_cake do |stub|
-        stub.put('/API/ContactGroups/Update/') do |env|
+        stub.put('/API/ContactGroups/Update') do |env|
           expect(env.request_headers).to eq form_request_headers
           expect(env.body).to eq URI.encode_www_form(params.sort)
           [200, {'Content-Type' => 'json'}, JSON.dump(response)]
@@ -66,7 +66,7 @@ describe StatusCake::Client do
     end
   end
 
-  describe '/API/ContactGroups/' do
+  describe '/API/ContactGroups' do
     let(:response) do
       [{"GroupName"=>"Pushover Test",
         "Emails"=>["team@trafficcake.com"],
@@ -80,7 +80,7 @@ describe StatusCake::Client do
 
     it do
       client = status_cake do |stub|
-        stub.get('/API/ContactGroups/') do |env|
+        stub.get('/API/ContactGroups') do |env|
           expect(env.request_headers).to eq request_headers
           [200, {'Content-Type' => 'json'}, JSON.dump(response)]
         end
@@ -90,7 +90,7 @@ describe StatusCake::Client do
     end
   end
 
-  describe '/API/Tests/Checks/' do
+  describe '/API/Tests/Checks' do
     let(:params) do
       {TestID: 241}
     end
@@ -103,7 +103,7 @@ describe StatusCake::Client do
 
     it do
       client = status_cake do |stub|
-        stub.get('/API/Tests/Checks/') do |env|
+        stub.get('/API/Tests/Checks') do |env|
           expect(env.request_headers).to eq request_headers
           expect(env.params).to eq stringify_hash(params)
           [200, {'Content-Type' => 'json'}, JSON.dump(response)]
@@ -114,7 +114,29 @@ describe StatusCake::Client do
     end
   end
 
-  describe '/API/Tests/' do
+  describe '/API/Tests/Periods' do
+    let(:params) do
+      {TestID: 241}
+    end
+
+    let(:response) do
+      {"Start"=>"2013-02-24 16:01:46", "End"=>"0000-00-00 00:00:00", "Type"=>"Up"}
+    end
+
+    it do
+      client = status_cake do |stub|
+        stub.get('/API/Tests/Periods') do |env|
+          expect(env.request_headers).to eq request_headers
+          expect(env.params).to eq stringify_hash(params)
+          [200, {'Content-Type' => 'json'}, JSON.dump(response)]
+        end
+      end
+
+      expect(client.tests_periods(params)).to eq response
+    end
+  end
+
+  describe '/API/Tests' do
     let(:response) do
       [{"TestID"=>28110,
         "Paused"=>false,
@@ -128,7 +150,7 @@ describe StatusCake::Client do
 
     it do
       client = status_cake do |stub|
-        stub.get('/API/Tests/') do |env|
+        stub.get('/API/Tests') do |env|
           expect(env.request_headers).to eq request_headers
           [200, {'Content-Type' => 'json'}, JSON.dump(response)]
         end
@@ -145,7 +167,7 @@ describe StatusCake::Client do
 
     it do
       client = status_cake do |stub|
-        stub.get('/API/Alerts/') do |env|
+        stub.get('/API/Alerts') do |env|
           expect(env.request_headers).to eq request_headers
           [200, {'Content-Type' => 'json'}, JSON.dump(response)]
         end
@@ -160,7 +182,7 @@ describe StatusCake::Client do
   context 'when status is not 200' do
     it do
       client = status_cake do |stub|
-        stub.get('/API/Alerts/') do |env|
+        stub.get('/API/Alerts') do |env|
           expect(env.request_headers).to eq request_headers
           [500, {}, 'Internal Server Error']
         end

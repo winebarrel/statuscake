@@ -13,12 +13,13 @@ class StatusCake::Client
   ]
 
   APIs = {
-    '/API/Alerts/'               => :get,
-    '/API/ContactGroups/Update/' => :put,
-    '/API/ContactGroups/'        => :get,
-    '/API/Tests/Checks/'         => :get,
-    '/API/Tests/'                => :get,
-    '/API/Tests/Details/'        => :get,
+    '/API/Alerts'               => :get,
+    '/API/ContactGroups/Update' => :put,
+    '/API/ContactGroups'        => :get,
+    '/API/Tests/Checks'         => :get,
+    '/API/Tests/Periods'        => :get,
+    '/API/Tests'                => :get,
+    '/API/Tests/Details'        => :get,
   }
 
   def initialize(options)
@@ -46,7 +47,7 @@ class StatusCake::Client
   end
 
   APIs.each do |path, method|
-    name = path.sub(%r|\A/API/|, '').sub(%r|/\z|, '').gsub('/', '_').downcase
+    name = path.sub(%r|\A/API/|, '').gsub('/', '_').downcase
 
     class_eval <<-EOS, __FILE__, __LINE__ + 1
       def #{name}(params = {})
