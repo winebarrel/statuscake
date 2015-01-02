@@ -221,7 +221,7 @@ describe StatusCake::Client do
          "WebsiteURL"=>"http://example.com",
          "CheckRate"=>"300",
          "TestType"=>"HTTP",
-         "Client"=>"26309"},
+         "Client"=>"12345"},
        "InsertID"=>7555}
     end
 
