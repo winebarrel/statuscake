@@ -16,6 +16,7 @@ class StatusCake::Client
     '/API/Alerts/'               => :get,
     '/API/ContactGroups/Update/' => :put,
     '/API/ContactGroups/'        => :get,
+    '/API/Tests/Checks/'         => :get,
     '/API/Tests/'                => :get,
     '/API/Tests/Details/'        => :get,
   }

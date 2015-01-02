@@ -90,6 +90,30 @@ describe StatusCake::Client do
     end
   end
 
+  describe '/API/Tests/Checks/' do
+    let(:params) do
+      {TestID: 241}
+    end
+
+    let(:response) do
+      {"3986660001"=>{"Location"=>"WADA3", "Time"=>1413285656, "Status"=>200},
+       "3027990001"=>{"Location"=>"DOUK2", "Time"=>1413285239, "Status"=>200},
+       "3322390001"=>{"Location"=>"UK50", "Time"=>1413285124, "Status"=>200}}
+    end
+
+    it do
+      client = status_cake do |stub|
+        stub.get('/API/Tests/Checks/') do |env|
+          expect(env.request_headers).to eq request_headers
+          expect(env.params).to eq stringify_hash(params)
+          [200, {'Content-Type' => 'json'}, JSON.dump(response)]
+        end
+      end
+
+      expect(client.tests_checks(params)).to eq response
+    end
+  end
+
   describe '/API/Tests/' do
     let(:response) do
       [{"TestID"=>28110,
