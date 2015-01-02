@@ -13,16 +13,19 @@ class StatusCake::Client
   ]
 
   APIs = {
-    '/API/Alerts'               => :get,
-    '/API/ContactGroups/Update' => :put,
-    '/API/ContactGroups'        => :get,
-    '/API/Tests/Checks'         => :get,
-    '/API/Tests/Periods'        => :get,
-    '/API/Tests'                => :get,
-    '/API/Tests/Details'        => :get,
+    '/API/Alerts'               => {:method => :get},
+    '/API/ContactGroups/Update' => {:method => :put},
+    '/API/ContactGroups'        => {:method => :get},
+    '/API/Tests/Checks'         => {:method => :get},
+    '/API/Tests/Periods'        => {:method => :get},
+    '/API/Tests'                => {:method => :get},
+    '/API/Tests/Details'        => {:method => :get},
     # Delete test when HTTP method is "DELETE"
     # see https://www.statuscake.com/api/Tests/Deleting%20a%20Test.md
-    '/API/Tests/Update'         => :put,
+    '/API/Tests/Update'         => {:method => :put},
+    '/API/Locations/json'       => {:method => :get, :alias => :locations},
+    '/API/Locations/txt'        => {:method => :get},
+    '/API/Locations/xml'        => {:method => :get},
   }
 
   def initialize(options)
@@ -49,15 +52,19 @@ class StatusCake::Client
     @conn.headers[:user_agent] = USER_AGENT
   end
 
-  APIs.each do |path, method|
-    name = path.sub(%r|\A/API/|, '').gsub('/', '_').downcase
+  APIs.each do |path, attrs|
+    names = [path.sub(%r|\A/API/|, '').gsub('/', '_').downcase]
+    names << attrs[:alias] if attrs.has_key?(:alias)
+    method = attrs[:method]
 
-    class_eval <<-EOS, __FILE__, __LINE__ + 1
-      def #{name}(params = {})
-        method = params.delete(:method) || #{method.inspect}
-        request(#{path.inspect}, method, params)
-      end
-    EOS
+    names.each do |name|
+      class_eval <<-EOS, __FILE__, __LINE__ + 1
+        def #{name}(params = {})
+          method = params.delete(:method) || #{method.inspect}
+          request(#{path.inspect}, method, params)
+        end
+      EOS
+    end
   end
 
   private
