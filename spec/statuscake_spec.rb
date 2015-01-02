@@ -202,6 +202,31 @@ describe StatusCake::Client do
     end
   end
 
+  describe '/API/Tests/Details (delete)' do
+    let(:params) do
+      {TestID: 241}
+    end
+
+    let(:response) do
+      {"TestID"=>6735,
+       "Affected"=>1,
+       "Success"=>true,
+       "Message"=>"This Check Has Been Deleted. It can not be recovered."}
+    end
+
+    it do
+      client = status_cake do |stub|
+        stub.delete('/API/Tests/Details') do |env|
+          expect(env.request_headers).to eq request_headers
+          expect(env.params).to eq stringify_hash(params)
+          [200, {'Content-Type' => 'json'}, JSON.dump(response)]
+        end
+      end
+
+      expect(client.tests_details(params.merge(method: :delete))).to eq response
+    end
+  end
+
   describe '/API/Tests/Update' do
     let(:params) do
       {

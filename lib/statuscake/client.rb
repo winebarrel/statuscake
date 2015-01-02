@@ -20,6 +20,8 @@ class StatusCake::Client
     '/API/Tests/Periods'        => :get,
     '/API/Tests'                => :get,
     '/API/Tests/Details'        => :get,
+    # Delete test when HTTP method is "DELETE"
+    # see https://www.statuscake.com/api/Tests/Deleting%20a%20Test.md
     '/API/Tests/Update'         => :put,
   }
 
@@ -52,7 +54,8 @@ class StatusCake::Client
 
     class_eval <<-EOS, __FILE__, __LINE__ + 1
       def #{name}(params = {})
-        request(#{path.inspect}, #{method.inspect}, params)
+        method = params.delete(:method) || #{method.inspect}
+        request(#{path.inspect}, method, params)
       end
     EOS
   end
