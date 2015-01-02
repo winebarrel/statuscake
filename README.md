@@ -1,4 +1,4 @@
-# statusake
+# StatusCake
 
 TODO: Write a gem description
 
