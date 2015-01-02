@@ -66,6 +66,30 @@ describe StatusCake::Client do
     end
   end
 
+  describe '/API/ContactGroups/' do
+    let(:response) do
+      [{"GroupName"=>"Pushover Test",
+        "Emails"=>["team@trafficcake.com"],
+        "Mobiles"=>[],
+        "Boxcar"=>"",
+        "Pushover"=>"gZh7mBkRIH4CsxWDwvkLBwlEZpxfpZ",
+        "ContactID"=>5,
+        "PingURL"=>"",
+        "DesktopAlert"=>1}]
+    end
+
+    it do
+      client = status_cake do |stub|
+        stub.get('/API/ContactGroups/') do |env|
+          expect(env.request_headers).to eq request_headers
+          [200, {'Content-Type' => 'json'}, JSON.dump(response)]
+        end
+      end
+
+      expect(client.contactgroups).to eq response
+    end
+  end
+
   describe '/API/Tests/' do
     let(:response) do
       [{"TestID"=>28110,
