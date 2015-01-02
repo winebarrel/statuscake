@@ -202,6 +202,42 @@ describe StatusCake::Client do
     end
   end
 
+  describe '/API/Tests/Update' do
+    let(:params) do
+      {
+        WebsiteName: 'Example Domain',
+        WebsiteURL:  'http://example.com',
+        CheckRate:   300,
+        TestType:    :HTTP,
+      }
+    end
+
+    let(:response) do
+      {"Success"=>true,
+       "Message"=>"Test Inserted",
+       "Issues"=>nil,
+       "Data"=>
+        {"WebsiteName"=>"Example Domain",
+         "WebsiteURL"=>"http://example.com",
+         "CheckRate"=>"300",
+         "TestType"=>"HTTP",
+         "Client"=>"26309"},
+       "InsertID"=>7555}
+    end
+
+    it do
+      client = status_cake do |stub|
+        stub.put('/API/Tests/Update') do |env|
+          expect(env.request_headers).to eq form_request_headers
+          expect(env.body).to eq URI.encode_www_form(params.sort)
+          [200, {'Content-Type' => 'json'}, JSON.dump(response)]
+        end
+      end
+
+      expect(client.tests_update(params)).to eq response
+    end
+  end
+
   context 'when error happen' do
     let(:response) do
       {"ErrNo"=>1, "Error"=>"REQUEST[TestID] provided not linked to this account"}

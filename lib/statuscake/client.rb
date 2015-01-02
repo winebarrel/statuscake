@@ -20,6 +20,7 @@ class StatusCake::Client
     '/API/Tests/Periods'        => :get,
     '/API/Tests'                => :get,
     '/API/Tests/Details'        => :get,
+    '/API/Tests/Update'         => :put,
   }
 
   def initialize(options)
