@@ -13,7 +13,8 @@ class StatusCake::Client
   ]
 
   APIs = {
-    '/API/Tests/' => :get
+    '/API/Tests/'         => :get,
+    '/API/Tests/Details/' => :get,
   }
 
   def initialize(options)
