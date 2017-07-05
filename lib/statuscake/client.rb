@@ -1,5 +1,5 @@
 class StatusCake::Client
-  ENDPOINT = 'https://www.statuscake.com'
+  ENDPOINT = 'https://app.statuscake.com'
   USER_AGENT = "Ruby StatusCake Client #{StatusCake::VERSION}"
 
   DEFAULT_ADAPTERS = [
